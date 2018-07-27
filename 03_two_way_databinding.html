@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>two_way_databinding</title>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body>
+    <form ng-controller="MainCtrl as mainCtrl">
+        <input type="text" ng-model="mainCtrl.msg" /><br />
+        {{mainCtrl.msg}}
+    </form>
+</body>
+<script>
+    var myApp = angular.module("myApp",[]);
+    myApp.controller("MainCtrl",[function () {
+        this.msg = "Hello Angular";
+    }]);
+</script>
+</html>

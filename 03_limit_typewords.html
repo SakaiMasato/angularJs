@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>limit_typewords</title>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body>
+    <form ng-controller="MainCtrl as mainCtrl">
+        <div>
+            <textarea ng-model="mainCtrl.content" cols="80" rows="30"></textarea>
+            <span ng-style="mainCtrl.isOverWordsLimit()">{{mainCtrl.content.length}}/140字</span>
+        </div>
+        <input type="button" value="submit" ng-disabled="mainCtrl.content.length>140" />
+        <input type="button" value="reset" ng-disabled="mainCtrl.content.length==0" ng-click="mainCtrl.res()" />
+    </form>
+</body>
+    <script>
+        var myApp = angular.module("myApp",[]);
+        myApp.controller("MainCtrl",[function () {
+            this.content = "";
+            this.isOverWordsLimit = function () {
+                return this.content.length > 140 ? {'color':'red'}:{'color':'0'};
+            }
+            this.res = function () {
+                this.content = "";
+            }
+        }]);
+    </script>
+</html>

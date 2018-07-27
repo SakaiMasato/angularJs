@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>table</title>
+    <style>
+        .table-wrapper{
+            width: 600px;
+            margin: 0 auto;
+        }
+        table, tr, td, th{
+            border-bottom: 1px solid #333;
+            border-collapse: collapse;
+        }
+        th, td{
+            width: 20%;
+            line-height: 60px;
+        }
+        tr:nth-child(2){
+            background-color: #eee;
+        }
+        .data{
+            background-color: skyblue;
+            border: 1px solid #ccc;
+            padding: auto;
+            margin-top: 5px;
+        }
+    </style>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body>
+    <div ng-controller="MainCtrl as mainCtrl">
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th ng-click="mainCtrl.sortBy('id')">
+                        id<span ng-show="mainCtrl.sortValue=='id'">{{mainCtrl.asc?"↑":"↓"}}</span>
+                    </th>
+                    <th ng-click="mainCtrl.sortBy('name')">
+                        name<span ng-show="mainCtrl.sortValue=='name'">{{mainCtrl.asc?"↑":"↓"}}</span>
+                    </th>
+                    <th ng-click="mainCtrl.sortBy('math')">
+                        math<span ng-show="mainCtrl.sortValue=='math'">{{mainCtrl.asc?"↑":"↓"}}</span>
+                    </th>
+                    <th ng-click="mainCtrl.sortBy('chinese')">
+                        chinese<span ng-show="mainCtrl.sortValue=='chinese'">{{mainCtrl.asc?"↑":"↓"}}</span>
+                    </th>
+                    <th ng-click="mainCtrl.sortBy('english')">
+                        english<span ng-show="mainCtrl.sortValue=='english'">{{mainCtrl.asc?"↑":"↓"}}</span>
+                    </th>
+                    <th>delete</th>
+                </tr>
+                <tr ng-repeat="item in mainCtrl.data">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.math}}</td>
+                    <td>{{item.chinese}}</td>
+                    <td>{{item.english}}</td>
+                    <td><input type="button" value="del" ng-click="mainCtrl.del(item.id)"/></td>
+                </tr>
+            </table>
+        </div>
+        <div class="data">
+            id:<input type="text" ng-model="mainCtrl.result.id">&nbsp;
+            name:<input type="text" ng-model="mainCtrl.result.name">&nbsp;
+            math:<input type="text" ng-model="mainCtrl.result.math">&nbsp;
+            chinese:<input type="text" ng-model="mainCtrl.result.chinese">&nbsp;
+            english:<input type="text" ng-model="mainCtrl.result.english"><br />
+            result:{{mainCtrl.result}}
+            <input type="button" value="add" ng-click="mainCtrl.addItem();">
+        </div>
+    </div>
+</body>
+<script>
+    var myApp = angular.module("myApp",[]);
+    myApp.controller("MainCtrl",[function () {
+        this.data=[
+            {"id":"100001","name":"Jack","math":"23","chinese":"32","english":"43"},
+            {"id":"100002","name":"Tom","math":"25","chinese":"62","english":"23"},
+            {"id":"100003","name":"Mary","math":"23","chinese":"32","english":"76"},
+            {"id":"100004","name":"Peter","math":"27","chinese":"32","english":"93"}
+        ];
+        this.result = {};
+        this.sortValue = "";//排序的字段
+        this.asc=true;//升序or降序
+        //增
+        this.addItem = function () {
+            this.data.push(this.result);
+            this.result = {};
+        };
+        //删
+        this.del = function (id) {
+            for(var i=0;i<this.data.length;i++){
+                if(this.data[i].id==id){
+                    this.data.splice(i,1);
+                }
+            }
+        };
+        //排序
+        this.sortBy = function(status){
+            if(this.sortValue == status){
+                this.asc = !this.asc;
+            }else{
+                this.sortValue = status;
+                this.asc = true
+            }
+            this.data.sort(function (a, b) {
+                if(a[this.sortValue]>b[this.sortValue]){
+                    return this.asc?1:-1;
+                }else{
+                    return this.asc?-1:1;
+                }
+            });
+        };
+    }]);
+</script>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>color_palettes</title>
+    <style>
+        .box{
+            width: 200px;
+            height: 200px;
+            border: 1px solid #333;
+        }
+    </style>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body ng-controller="MainController as mainCtrl">
+    <div class="box" ng-style="mainCtrl.getColor()"></div>
+    <div>
+        r:<input type="range" ng-model="mainCtrl.r" min="0" max="255"/>{{mainCtrl.r}}&nbsp;&nbsp;
+        g:<input type="range" ng-model="mainCtrl.g" min="0" max="255"/>{{mainCtrl.g}}&nbsp;&nbsp;
+        b:<input type="range" ng-model="mainCtrl.b" min="0" max="255"/>{{mainCtrl.b}}&nbsp;&nbsp;
+        a:<input type="range" ng-model="mainCtrl.a" min="0" max="1" step="0.01"/>{{mainCtrl.a}}&nbsp;&nbsp;
+    </div>
+</body>
+<script>
+    var myApp = angular.module("myApp",[]);
+    myApp.controller("MainController",[function () {
+        this.r = 100;
+        this.g = 100;
+        this.b = 100;
+        this.a = 0.63;
+        this.getColor = function () {
+            return {"background-color":"rgb("+this.r+","+this.g+","+this.b+","+this.a+")"};
+        }
+    }]);
+</script>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>use_controller</title>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body>
+<!--控制器需要实例化 类名 as 实例名-->
+    <div ng-controller="MainCtrl as mainCtrl">
+        {{ mainCtrl.msg + mainCtrl.num}}
+        <input value="add" type="button" ng-click="mainCtrl.add();">
+    </div>
+</body>
+<script>
+    //创建angular的模块,[]中表示该模块引用的依赖
+    var myApp = angular.module("myApp",[]);
+    //创建控制器
+    myApp.controller("MainCtrl",[function () {
+        alert("Hello Angular");
+        this.msg = "Hello Angular";
+        this.num = 0;;
+        this.add = function () {
+            this.num++;
+        }
+    }]);
+</script>
+</html>
