@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>select</title>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body ng-controller="MainCtrl as mainCtrl">
+    <!--ng-options必须有ng-model-->
+    <select ng-model="mainCtrl.value1" ng-options="item for item in mainCtrl.data1"></select>{{mainCtrl.value1}}<br />
+    <select ng-model="mainCtrl.value2" ng-options="item.number as item.city for item in mainCtrl.data2"></select>{{mainCtrl.value2}}<br />
+    <select ng-model="mainCtrl.value3" ng-options="v as k for (k,v) in mainCtrl.data3"></select>{{mainCtrl.value3}}
+</body>
+<script>
+    var myApp = angular.module("myApp",[]);
+    myApp.controller("MainCtrl",[function () {
+        this.value1="english";
+        this.value2="0311";
+        this.value3="粤";
+        this.data1 = ["math","chinese","english"];
+        this.data2 = [
+            {"number":"010","city":"beijing"},
+            {"number":"029","city":"xian"},
+            {"number":"0311","city":"shijiazhuang"}
+        ];
+        this.data3 = {
+            "北京":"京",
+            "广东":"粤",
+            "湖北":"鄂",
+            "湖南":"湘"
+        };
+    }]);
+</script>
+</html>
