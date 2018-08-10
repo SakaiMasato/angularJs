@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body ng-controller="MyCtrl as myCtrl">
+<select></select>
+<select></select>
+<select></select>
+
+</body>
+<script>
+    var myApp = angular.module("myApp",[]);
+    //$http请求服务端数据
+    myApp.controller("MyCtrl",["$http",function($http){
+       $http.get("resource/provinceCityMsg.json").then(function(data){
+           console.log(data);
+       });
+    }]);
+</script>
+</html>
