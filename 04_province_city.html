@@ -6,17 +6,23 @@
     <script src="js/lib/angular/angular.min.js"></script>
 </head>
 <body ng-controller="MyCtrl as myCtrl">
-<select></select>
-<select></select>
-<select></select>
-
+<select ng-model="myCtrl.province" ng-options="item.name for item in myCtrl.data"></select>
+<select ng-model="myCtrl.city" ng-options="item.name for item in myCtrl.province.child"></select>
+<select ng-model="myCtrl.region" ng-options="item.value for item in myCtrl.city.child"></select><br />
+{{myCtrl.province.name}} {{myCtrl.city.name}} {{myCtrl.region.value}}
 </body>
 <script>
     var myApp = angular.module("myApp",[]);
     //$http请求服务端数据
     myApp.controller("MyCtrl",["$http",function($http){
+        this.province = "";
+        this.city="";
+        this.region="";
+        var self = this;
        $http.get("resource/provinceCityMsg.json").then(function(data){
-           console.log(data);
+
+           self.data = data.data;
+           console.log(self.data);
        });
     }]);
 </script>
