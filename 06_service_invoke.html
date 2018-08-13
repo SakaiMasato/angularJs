@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>06_service_invoke</title>
+    <style>
+        .table-wrapper{
+            width: 600px;
+            margin: 0 auto;
+        }
+        table, tr, td, th{
+            border-bottom: 1px solid #333;
+            border-collapse: collapse;
+        }
+        th, td{
+            width: 20%;
+            line-height: 60px;
+        }
+        tr:nth-child(even){
+            background-color: #eee;
+        }
+    </style>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body>
+<div ng-controller="Ctrl as ctrl">
+    <table class="table-wrapper">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>math</th>
+            <th>chinese</th>
+            <th>english</th>
+        </tr>
+        <tr ng-repeat="item in ctrl.getStudents()">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.math}}</td>
+            <td>{{item.chinese}}</td>
+            <td>{{item.english}}</td>
+        </tr>
+    </table>
+    <input type="button" ng-click="ctrl.updateStudents()" value="updates">
+</div>
+</body>
+<script>
+    var myApp = angular.module("myApp",[]);
+    myApp.controller("Ctrl",["StudentService",function(StudentService){
+        //查询学生
+        this.getStudents = function(){
+           return StudentService.getStudents();
+        }
+        this.updateStudents = function(){
+            return StudentService.getStudentFromServer();
+        }
+    }]);
+
+    // service定义
+    myApp.service("StudentService",["$http",function($http){
+        var students = [];
+
+        this.getStudents = function(){
+            return students;
+        }
+        this.getStudentFromServer = function(){
+            //读取学生数据
+            $http.get("resource/student.json").then(function(data){
+                students = data.data;
+            });
+        }
+    }]);
+</script>
+</html>
