@@ -1,6 +1,28 @@
 <!DOCTYPE html>
 <html>
-<script src="js/lib/angular/angular.min.js"></script>
+<head>
+    <style>
+        .s1{
+            display: inline-block;
+            height: 10px;
+            width: 10px;
+            background-color: red;
+        }
+        .s2{
+            display: inline-block;
+            height: 10px;
+            width: 30px;
+            background-color: orange;
+        }
+        .s3{
+            display: inline-block;
+            height: 10px;
+            width: 50px;
+            background-color: lightgreen;
+        }
+    </style>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
 <body>
 
 <h2>Validation Example</h2>
@@ -12,7 +34,25 @@
         <input type="text" name="user" ng-model="user" required ng-pattern="/^[(a-z|A-Z|0-9|_|$|\s+)]*$/">
         <span style="color:red" ng-show="myForm.user.$dirty && myForm.user.$invalid">
             <span ng-show="myForm.user.$error.required">username required</span>
-            <span ng ng-show="myForm.user.$error.pattern">username illegal</span>
+            <span ng-show="myForm.user.$error.pattern">username illegal</span>
+        </span>
+    </p>
+
+    <p>password:<br>
+        <input type="password" name="password" ng-model="password" required ng-minlength="6"/>
+        <span style="color:red" ng-show="myForm.password.$dirty && myForm.password.$invalid">
+            <span ng-show="myForm.password.$error.required">password required</span>
+            <span ng-show="myForm.password.$error.minlength">minimum length is 6</span>
+            <!--<span ng-show="myForm.password.$error.maxlength">maximum length is 10</span>-->
+        </span>
+        <span ng-class="getPwdStrength()" ng-show="myForm.password.$valid"></span>
+    </p>
+    <p>age:<br>
+        <input type="number" name="age" ng-model="age" required min="15" max="40">
+        <span style="color:red" ng-show="myForm.age.$dirty && myForm.age.$invalid">
+            <span ng-show="myForm.age.$error.required">age required</span>
+            <span ng-show="myForm.age.$error.min">minimum age is 15</span>
+            <span ng-show="myForm.age.$error.max">maximum age is 40</span>
         </span>
     </p>
 
@@ -20,14 +60,14 @@
         <input type="email" name="email" ng-model="email" required>
         <span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
             <span ng-show="myForm.email.$error.required">mail required</span>
-        <span ng-show="myForm.email.$error.email">mail illegal</span>
-  </span>
+            <span ng-show="myForm.email.$error.email">mail illegal</span>
+        </span>
     </p>
 
     <p>
         <input type="submit"
-               ng-disabled="myForm.user.$dirty && myForm.user.$invalid ||
-  myForm.email.$dirty && myForm.email.$invalid">
+               ng-disabled="myForm.$dirty || myForm.$valid ||
+                            pwdStrength<3">
     </p>
 
 </form>
@@ -37,7 +77,28 @@
     app.controller('validateCtrl', function($scope) {
         $scope.user = 'John Doe';
         $scope.email = 'john.doe@gmail.com';
+        $scope.age = 15;
+        $scope.password = "";
+        $scope.pwdStrength = 0;
+        $scope.getPwdStrength = function () {
+            $scope.pwdStrength = checkStrength($scope.password);
+            return "s"+$scope.pwdStrength;
+        }
+        $scope.getPwdLength = function(pwd){
+            return pwd.length<6;
+        }
     });
+
+    function checkStrength(password) {
+        var lv = 0;
+        if(password){
+            if(password.match(/[a-z]/g)){lv++;}
+            if(password.match(/[0-9]/g)){lv++;}
+            if(password.match(/.[^a-z0-9]/g)){lv++;}
+            if(lv>3){lv=3;}
+        }
+        return lv;
+    }
 </script>
 
 </body>

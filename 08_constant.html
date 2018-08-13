@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>08_constant</title>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body>
+<section ng-controller="Ctrl1 as ctrl1">
+    <input type="text" ng-model="ctrl1.a" ng-change="ctrl1.setA('{{ctrl1.a}}')">
+</section>
+<div style="height: 20px; background-color: lightgray; margin-top:5px" ></div>
+<section ng-controller="Ctrl2 as ctrl2">
+    {{ctrl2.getResult()}}
+</section>
+</body>
+<script>
+    var myApp = angular.module("myApp",[]);
+    //constant服务,一般用来定义不会改变的对象
+    myApp.constant("mathConstant",{
+       b:"hello",
+       c:"world",
+       add:function () {
+           return this.b+" "+this.c;
+       },
+    });
+    //value,一般用来定义会改变的对象
+    myApp.value("mathValue",{
+        a:1,
+        setA:function(a){
+            this.a = a;
+        },
+        getA:function () {
+            return this.a;
+        }
+    });
+    //controller调用服务
+    myApp.controller("Ctrl1",["mathValue",function (mathValue) {
+        this.a = "";
+        this.setA=function(){
+            mathValue.setA(this.a);
+        }
+    }]);
+    myApp.controller("Ctrl2",["mathConstant","mathValue",function (mathConstant,mathValue) {
+        this.getResult = function () {
+            return mathValue.getA() +" "+ mathConstant.add();
+        }
+
+    }]);
+</script>
+</html>

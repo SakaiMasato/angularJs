@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>06_service</title>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body>
+<section ng-controller="MainCtrl as mainCtrl">
+    <input type="text" ng-model="mainCtrl.a">{{mainCtrl.getPower()}}
+</section>
+<div style="height: 20px; background-color: lightgray; margin-top:5px" ></div>
+<section ng-controller="Ctrl1 as ctrl1">
+    <input type="text" ng-model="ctrl1.a">
+    <input type="button" value="submit" ng-click="ctrl1.setA()">
+</section>
+<section ng-controller="Ctrl2 as ctrl2">
+    {{ctrl2.getA()}}
+</section>
+</body>
+<script>
+    var myApp = angular.module("myApp",[]);
+    //angular的服务是惰性的，只有在调用的时候才实例化
+    myApp.service("MathService",[function(){
+        this.power = function(a){
+            return a * a;
+        };
+
+        var a = 0;
+        this.setA = function(value){
+            a = value;
+        };
+        this.getA = function () {
+            return a;
+        }
+    }]);
+
+    myApp.controller("MainCtrl",["MathService",function(MathService){
+        this.a = "";
+        this.getPower = function(){
+            return MathService.power(this.a);
+        }
+    }]);
+    //controller调用服务
+    myApp.controller("Ctrl1",["MathService",function (MathService) {
+        this.a = 10;
+        this.setA = function(){
+            MathService.setA(this.a);
+        }
+    }]);
+    myApp.controller("Ctrl2",["MathService",function (MathService) {
+        this.getA = function(){
+            return MathService.getA();
+        }
+    }]);
+</script>
+</html>

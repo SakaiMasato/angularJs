@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>07_factory</title>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body>
+<section ng-controller="Ctrl1 as ctrl1">
+    <input type="button" value="-" ng-click="ctrl1.minusA()">
+    {{ctrl1.getA()}}
+    <input type="button" value="+" ng-click="ctrl1.addA()">
+</section>
+<div style="height: 20px; background-color: lightgray; margin-top:5px" ></div>
+<section ng-controller="Ctrl2 as ctrl2">
+    {{ctrl2.getA()}}
+</section>
+</body>
+<script>
+    var myApp = angular.module("myApp",[]);
+    //factory与service同样都是服务，factory是通过return将api暴露出来,两个控制器公用一个factory服务所以a是共享的
+    myApp.factory("mathService",[function () {
+        var a = 0;
+        var add = function () {
+            a++;
+        }
+        var minus = function () {
+            a--;
+        }
+        var getA = function () {
+            return a;
+        }
+        return {
+            add:add,
+            minus:minus,
+            getA:getA
+        };
+    }]);
+    //controller调用服务
+    myApp.controller("Ctrl1",["mathService",function (mathService) {
+        this.a = 10;
+        this.addA = function(){
+            mathService.add();
+        }
+        this.minusA = function () {
+            mathService.minus();
+        }
+        this.getA = function () {
+            return mathService.getA();
+        }
+    }]);
+    myApp.controller("Ctrl2",["mathService",function (mathService) {
+        this.getA = function(){
+            return mathService.getA();
+        }
+    }]);
+</script>
+</html>

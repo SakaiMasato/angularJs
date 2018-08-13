@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>09_provider</title>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body>
+<section ng-controller="Ctrl1 as ctrl1">
+    <input type="text" ng-model="ctrl1.name" ng-change="ctrl1.setName('{{ctrl1.name}}')">
+</section>
+<section ng-controller="Ctrl2 as ctrl2">
+    {{ctrl2.getName()}} World
+</section>
+</body>
+<script>
+    var myApp = angular.module("myApp",[]);
+    //配置一个服务
+    myApp.config(function(mathProviderProvider){
+        mathProviderProvider.configName("Bob");
+    });
+    // provider服务中，$get必须返回一个对象，这个对象就是真正被注入的服务
+    myApp.provider("mathProvider",[function(){
+        var name = "jane";
+        var getName = function () {
+            return name;
+        }
+        var setName = function (firstName) {
+            name = firstName;
+        }
+        return {
+            //这个configName可以在config中配置
+            configName:function(firstName){
+                name = firstName
+            },
+            $get : function() {
+                return {
+                    setName:setName,
+                    getName:getName
+                }
+            }
+        };
+    }]);
+    //controller调用服务
+    myApp.controller("Ctrl1",["mathProvider",function (mathProvider) {
+        this.name = "";
+        this.setName = function (name) {
+            mathProvider.setName(name);
+        }
+    }]);
+    myApp.controller("Ctrl2",["mathProvider",function (mathProvider) {
+        this.getName = function () {
+           return mathProvider.getName();
+        }
+    }]);
+</script>
+</html>
