@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>10_direct</title>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body>
+<!--A-->
+<div my-directive></div>
+<!--E-->
+<my-directive></my-directive>
+<!--C-->
+<div class="my-directive"></div>
+</body>
+<script>
+    myApp = angular.module("myApp",[]);
+    //directive指令默认AE等级，C等级需生命，M等级很少用忽略
+    myApp.directive("myDirective",[function () {
+        return{
+            restrict:"AEC",
+            // template:"<h1>hello world</h1>",
+            templateUrl:"./template/myDirect.html"
+        }
+    }])
+</script>
+</html>

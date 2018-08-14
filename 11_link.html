@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>11_link</title>
+    <script src="js/lib/angular/angular.min.js"></script>
+</head>
+<body>
+<div ng-controller="Ctrl as ctrl">
+    <input ng-model="ctrl.a" type="text"/>
+    obj:<input ng-model="ctrl.obj.m" type="text">
+    <my-directive a="{{ctrl.a}}" obj="ctrl.obj"></my-directive>
+</div>
+<!--E-->
+</body>
+<script>
+    myApp = angular.module("myApp",[]);
+    //directive指令默认AE等级，C等级需生命，M等级很少用忽略
+    myApp.directive("myDirective",[function () {
+        return{
+            //=表示对象（双向绑定）,@表示字符串（单向绑定）,&表示函数，将a值绑定到myDirective的属性中
+            scope:{
+              a:"@", obj:"="
+            },
+            restrict:"E",
+            templateUrl:"./template/myDirect.html",
+            //$scope外置模板作用域,可用scope参数定义：
+            //      默认false:继承父作用域;  true:继承父作用域且创建独立作用域;  {}:不继承父作用域且创建独立作用域
+            // elem元素本身
+            link:function ($scope,elem,attr) {
+
+            }
+        }
+    }]);
+
+    myApp.controller("Ctrl",[function(){
+        this.a = 99;
+        this.obj = {m:1,n:2}
+    }]);
+</script>
+</html>
