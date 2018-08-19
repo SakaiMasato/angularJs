@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/lib/angular/angular.min.js"></script>
+    <script src="js/lib/angular-ui-router/release/angular-ui-router.js"></script>
+</head>
+<body>
+<div ui-view="head"></div>
+<div ui-view="body"></div>
+<div ui-view="foot"></div>
+</body>
+<script>
+    var myApp = angular.module("myApp",["ui.router"]);
+    myApp.config(["$stateProvider","$urlRouterProvider",function($stateProvider,$urlRouterProvider){
+        //路由匹配
+        $stateProvider.state('/home',{
+            url:'/home',
+            views:{
+                head:{
+                    template:'<h1>head</h1>'
+                },
+                body:{
+                    template:'<my-Direct></my-Direct>'
+                },
+                foot:{
+                    template:'<h1>foot</h1>'
+                }
+            }
+        });
+
+        //若路由无匹配
+        $urlRouterProvider.otherwise('/home');
+    }]);
+    myApp.component('myDirect',{
+        templateUrl:"template/myDirect.html",
+        controller:"MyDirect"
+    })
+    myApp.controller("MyDirect",[function(){
+        this.a=1;
+        this.obj="obj";
+    }]);
+</script>
+</html>
